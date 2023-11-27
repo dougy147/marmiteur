@@ -6,8 +6,8 @@ import 'package:beautiful_soup_dart/beautiful_soup.dart'; // BeautifulSoup
 // Fetch userURL webpage
 Future suckWebpage(String userURL) async {
 	var client = Client();
-	final URI = Uri.parse(userURL);
-	Response response = await client.get(URI);
+	final finalURI = Uri.parse(userURL);
+	Response response = await client.get(finalURI);
 	BeautifulSoup bs = BeautifulSoup(response.body);
 	return bs;
 }
@@ -98,7 +98,8 @@ Map<String, dynamic> extractRecipe(String? content) {
 		"description": description,
 		"keywords": keywords,
 		"cuisine": cuisine,
-		"rating": rating
+		"rating": rating,
+		"video": video
 		});
 	return scrapped;
 }

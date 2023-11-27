@@ -27,6 +27,7 @@ void main() async {
   print(recipe['image']);
 }
 ```
+Also look at [pub.dev/packages/marmiteur](https://pub.dev/packages/marmiteur/install) package installation instructions.
 
 ## Usage
 
@@ -41,7 +42,8 @@ The main function `marmiteur()` returns a HashMap of all scrapped informations a
 | `name`        | String | Name of the recipe                                |
 | `category`    | String | Recipe category (cocktail, chili...)              |
 | `cuisine`     | String | Cuisine type (starter, main course, dessert...)   |
-| `image`       | List   | Link to a photograph of the meal                  |
+| `image`       | List   | Link to a photograph of the meal (if any)         |
+| `video`       | String | Link to an instruction video (if any)             |
 | `prepTime`    | String | -                                                 |
 | `cookTime`    | String |                                                   |
 | `totalTime`   | String | prepTime + cookTime                               |
@@ -51,10 +53,10 @@ The main function `marmiteur()` returns a HashMap of all scrapped informations a
 | `author`      | String | -                                                 |
 | `description` | String | -                                                 |
 | `keywords`    | String | -                                                 |
-| `rating`      | String | -                                                 |
+| `rating`      | double | -                                                 |
 | `date`        | String | Publication date                                  |
 
 ## Additional information
 
-Version `1.0.0` only works for a limited number of website.
+Version `1.0.0` only works for a limited number of websites.
 Feel free to contribute to this package to expand it.
