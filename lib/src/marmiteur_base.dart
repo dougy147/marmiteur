@@ -14,10 +14,16 @@ Future suckWebpage(String userURL) async {
 
 // Check if a recipe is available on the webpage
 String? pinpointRecipe(BeautifulSoup bs) {
-	RegExp exp = RegExp(r'\s+({.*"@type":"Recipe".*})'); // TODO: generalize
 	String str = bs.toString();
-	RegExpMatch? match = exp.firstMatch(str);
-	return match![0];
+	RegExp exp = RegExp(r'<script\s+.*?type=\"application\/ld\+json\"\s*?.*?>(\n|\s)*?((\[|\{)(\n|\s)*?((.*?\n)*?|.*?)\s*"@type"\s*?:\s*?(\[)?\s*?"Recipe"(.|\s|\n)*?)<\/script>');
+	var matches = exp.allMatches(str);
+	////print(matches);
+	var match = matches
+		      .elementAt(0) // Normally only match
+		      .group(2)     // 0: full exp, then inside parenthesis
+		      .toString();  // could be useless
+	//print(match);
+	return match;
 }
 
 // Place recipe details in HashMap.
@@ -35,72 +41,48 @@ Map<String, dynamic> extractRecipe(String? content) {
 	};
 
 	final parsedJson = jsonDecode(content); // Decode the JSON
+	print(parsedJson);
 
-	// Declare JSON keys names (facilitates future flexibility)
-	// (jk for JSON key)
-	//     -> adapt depending on scrapped URL
-	String jkName = 'name';
-	String jkCategory = 'recipeCategory';
-	String jkImage = 'image';
-	String jkDate = 'datePublished';
-	String jkPrepTime = 'prepTime';
-	String jkCookTime = 'cookTime';
-	String jkTotalTime = 'totalTime';
-	String jkYield = 'recipeYield';
-	String jkIngredients = 'recipeIngredient';
-	String jkInstructions = 'recipeInstructions';
-	String jkAuthor = 'author';
-	String jkDescription = 'description';
-	String jkKeywords = 'keywords';
-	String jkCuisine = 'recipeCuisine';
-	String jkRating = 'aggregateRating';
-	String jkVideo = 'video';
+	// Keys of interest
+	var keysToExtract = [
+	  'name',
+	  'recipeCategory',
+	  'image',
+	  'datePublished',
+	  'prepTime',
+	  'cookTime',
+	  'totalTime',
+	  'recipeYield',
+	  'recipeIngredient',
+	  'recipeInstructions',
+	  'author',
+	  'description',
+	  'keywords',
+	  'recipeCuisine',
+	  'aggregateRating',
+	  'video',
+	  '@graph',
+	];
 
-	// "Extract" data from JSON
-	String? name = parsedJson[jkName];
-	String? category = parsedJson[jkCategory];
-	List? image = parsedJson[jkImage]; // images URLs
-	String? date = parsedJson[jkDate];
-	String? prepTime  = parsedJson[jkPrepTime];
-	String? cookTime  = parsedJson[jkCookTime];
-	String? totalTime = parsedJson[jkTotalTime];
-	String? portion = parsedJson[jkYield];
-	List? ingredients = parsedJson[jkIngredients]; // images URLs
+	parsedJson.forEach((key, value) {
+	  if (keysToExtract.contains(key)) {
+	    //print('key: $key');
+	    //print('value: $value');
+	    scrapped[key] = value;
+	  }
+	});
 
-	List<String>? instructions = [];
-	parsedJson[jkInstructions].forEach((entry) {
-		instructions.add(entry['text']); // adjust
-		});
-
-	String? author = parsedJson[jkAuthor];
-	String? description = parsedJson[jkDescription];
-	String? keywords = parsedJson[jkKeywords]; // transform to list?
-
-	String? cuisine = parsedJson[jkCuisine];
-	double? rating = parsedJson[jkRating]['ratingValue']; // adjust
-
-	String? video = parsedJson[jkVideo]['contentUrl']; // adjust
-
-	// "Add" data to HashMap
-	//Map<String, dynamic> scrapped = HashMap();
-	scrapped.addAll({
-		"name": name,
-		"category": category,
-		"image": image,
-		"date": date,
-		"prepTime": prepTime,
-		"cookTime": cookTime,
-		"totalTime": totalTime,
-		"portion": portion,
-		"ingredients": ingredients,
-		"instructions": instructions,
-		"author": author,
-		"description": description,
-		"keywords": keywords,
-		"cuisine": cuisine,
-		"rating": rating,
-		"video": video
-		});
+	// If important key values (like name) are empty BUT not '@graph' try again
+	if (scrapped['name'] == null && scrapped['@graph'] != null) {
+	  var subJson = parsedJson['@graph'][0] as Map;
+	  subJson.forEach((key, value) {
+	    if (keysToExtract.contains(key)) {
+	      //print('key: $key');
+	      //print('value: $value');
+	      scrapped[key] = value;
+	    }
+	  });
+	};
 	return scrapped;
 }
 

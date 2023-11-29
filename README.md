@@ -22,8 +22,8 @@ void main() async {
   String recipeURL = "https://www.marmiton.org/recettes/recette_burger-d-avocat_345742.aspx";
   var recipe = await marmiteur(recipeURL);
   print(recipe['name']);
-  print(recipe['ingredients']);
-  print(recipe['instructions']);
+  print(recipe['recipeIngredient']);
+  print(recipe['recipeInstructions']);
   print(recipe['image']);
 }
 ```
@@ -32,31 +32,33 @@ Also look at [pub.dev/packages/marmiteur](https://pub.dev/packages/marmiteur/ins
 ## Usage
 
 ```dart
-var recipe = await marmiteur(recipeURL);
+var recipe = await marmiteur(recipeURL); // recipeURL is a String
 ```
 
 The main function `marmiteur()` returns a HashMap of all scrapped informations about the recipe. The keys it can be called with are listed in the following table. (Almost all self-explanatory.)
 
-| Key           | Type   | Value description                                 |
-|---------------|--------|---------------------------------------------------|
-| `name`        | String | Name of the recipe                                |
-| `category`    | String | Recipe category (cocktail, chili...)              |
-| `cuisine`     | String | Cuisine type (starter, main course, dessert...)   |
-| `image`       | List   | Link to a photograph of the meal (if any)         |
-| `video`       | String | Link to an instruction video (if any)             |
-| `prepTime`    | String | -                                                 |
-| `cookTime`    | String |                                                   |
-| `totalTime`   | String | prepTime + cookTime                               |
-| `portion`     | String | Eaters number                                     |
-| `ingredients` | List   | -                                                 |
-| `instructions`| List   | -                                                 |
-| `author`      | String | -                                                 |
-| `description` | String | -                                                 |
-| `keywords`    | String | -                                                 |
-| `rating`      | double | -                                                 |
-| `date`        | String | Publication date                                  |
+Be aware that the *usual type* refers to the key *most commonly used type*, but it can vary depending on the website.
+
+| Key                 | Usual type   | Value description                                 |
+|---------------------|--------------|---------------------------------------------------|
+| `name`              | String       | Name of the recipe                                |
+| `recipeCategory`    | String       | Recipe category (cocktail, chili...)              |
+| `recipeCuisine`     | String       | Cuisine type (starter, main course, dessert...)   |
+| `image`             | List         | Link to a photograph of the meal (if any)         |
+| `video`             | String       | Link to an instruction video (if any)             |
+| `prepTime`          | String       | -                                                 |
+| `cookTime`          | String       | -                                                 |
+| `totalTime`         | String       | prepTime + cookTime                               |
+| `recipeYield`       | String       | Portion (Number of persons to eat)                |
+| `recipeIngredient`  | List         | -                                                 |
+| `recipeInstructions`| List         | -                                                 |
+| `author`            | String       | -                                                 |
+| `description`       | String       | -                                                 |
+| `keywords`          | String       | -                                                 |
+| `aggregateRating`   | double       | -                                                 |
+| `datePublished`     | String       | Publication date                                  |
 
 ## Additional information
 
-Version `1.0.0` only works for a limited number of websites.
+Version `2.0.0` only works for a limited number of websites.
 Feel free to contribute to this package to expand it.
