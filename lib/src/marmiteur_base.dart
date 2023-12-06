@@ -32,7 +32,7 @@ String? pinpointRecipe(BeautifulSoup bs) {
 // That is not smart as the JSON is sufficient.
 // However, websites won't always provide JSONs
 // and this function will be adapted.
-Map<String, dynamic> extractRecipe(String? content, bool auto_format) {
+Map<String, dynamic> extractRecipe(String? content, bool autoFormat) {
 	// Construct empty HashMap
 	Map<String, dynamic> scrapped = HashMap();
 
@@ -82,8 +82,8 @@ Map<String, dynamic> extractRecipe(String? content, bool auto_format) {
 	  }
 	});
 
-	// If auto_format == true, then... proceed !
-	if ( auto_format ) {
+	// If autoFormat == true, then... proceed !
+	if ( autoFormat ) {
 	  scrapped = autoFormat(toParse, keysToExtract , scrapped);
 	};
 
@@ -335,10 +335,10 @@ Map<String, dynamic> autoFormat(var parsedJson , var keysToExtract , Map<String,
 //		import 'package:marmiteur/marmiteur.dart' as marmiteur;
 //		var myRecipe = await marmiteurscrapRecipe(userURL);
 //              print(myRecipe['name']);
-Future<Map<String, dynamic>> marmiteur(String userURL, { bool auto_format = true , bool print_output = false}) {
+Future<Map<String, dynamic>> marmiteur(String userURL, { bool autoFormat = true , bool printOutput = false}) {
 	var res = suckWebpage(userURL).then((value) {
 		String? match = pinpointRecipe(value);
-		return extractRecipe(match, auto_format); // auto_format (true by default) => outputs standardized types
+		return extractRecipe(match, autoFormat); // autoFormat (true by default) => outputs standardized types
 		});
 	return res;
 }

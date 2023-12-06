@@ -1,6 +1,6 @@
 ## 3.0.0
 
-- Added `auto_format` argument to main function (`true` by default). Will return formated scrapped details.
+- Added `autoFormat` argument to main function (`true` by default). Will return formated scrapped details.
 
 ## 2.0.0
 

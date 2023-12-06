@@ -33,12 +33,12 @@ Also look at [pub.dev/packages/marmiteur](https://pub.dev/packages/marmiteur/ins
 
 ```dart
 var recipe = await marmiteur(recipeURL); // recipeURL is a String
-var recipe = await marmiteur(recipeURL, auto_format = false); // unformated output
+var recipe = await marmiteur(recipeURL, autoFormat = false); // unformated output
 ```
 
 The main function `marmiteur()` returns a HashMap of all scrapped informations about the recipe. The keys it can be called with are listed in the following table. (Almost all self-explanatory.)
 
-Be aware that the *default type* refers to the one outputed when using `auto_format=true` in the main `marmiteur()` function (by default).
+Be aware that the *default type* refers to the one outputed when using `autoFormat=true` in the main `marmiteur()` function (by default).
 
 | Key                 | Default type  | Value description                                 |
 |---------------------|---------------|---------------------------------------------------|
