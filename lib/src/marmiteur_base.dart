@@ -17,7 +17,8 @@ String? pinpointRecipe(BeautifulSoup bs) {
 	String str = bs.toString();
 	RegExp exp = RegExp(r'<script\s+.*?type=\"application\/ld\+json\"\s*?.*?>(\n|\s)*?((\[|\{)(\n|\s)*?((.*?\n)*?|.*?)\s*"@type"\s*?:\s*?(\[)?\s*?"Recipe"(.|\s|\n)*?)<\/script>');
 	var matches = exp.allMatches(str);
-	if (matches.length != 0) {
+	//if (matches.length != 0) {
+	if (matches.isNotEmpty) {
 	  var match = matches
 	  	      .elementAt(0) // Normally only match
 	  	      .group(2)     // 0: full exp, then inside parenthesis
@@ -84,7 +85,7 @@ Map<String, dynamic> extractRecipe(String? content, bool autoFormat) {
 
 	// If autoFormat == true, then... proceed !
 	if ( autoFormat ) {
-	  scrapped = autoFormat(toParse, keysToExtract , scrapped);
+	  scrapped = formatOutput(toParse, keysToExtract , scrapped);
 	};
 
 	return scrapped;
@@ -92,7 +93,7 @@ Map<String, dynamic> extractRecipe(String? content, bool autoFormat) {
 
 // Try to extract and prune each piece of information,
 // returning it in the correct type (see Documentation).
-Map<String, dynamic> autoFormat(var parsedJson , var keysToExtract , Map<String, dynamic> scrapped) {
+Map<String, dynamic> formatOutput(var parsedJson , var keysToExtract , Map<String, dynamic> scrapped) {
 	// If important key values (like name) are empty BUT not '@graph' try again
 	// Name => String
 	if (scrapped['name'] == null && scrapped['@graph'] != null) {
